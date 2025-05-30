@@ -25,4 +25,12 @@ export class PedidosService {
       relations: ['items', 'items.producto'],
     });
   }
+  async update(id: number, data: Partial<Pedido>): Promise<Pedido> {
+    const pedido = await this.pedidoRepo.findOne({ where: { id } });
+    if (!pedido) {
+      throw new Error(`Pedido con ID ${id} no encontrado`);
+    }
+    const actualizado = Object.assign(pedido, data);
+    return this.pedidoRepo.save(actualizado);
+  }
 }
